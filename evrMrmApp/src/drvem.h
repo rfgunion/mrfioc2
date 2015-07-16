@@ -34,6 +34,8 @@
 #include "drvemCML.h"
 #include "drvemRxBuf.h"
 
+#include "drvemUDC.h"
+
 #include "mrmDataBufTx.h"
 #include "sfp.h"
 
@@ -129,6 +131,10 @@ public:
 
     virtual MRMCML* cml(epicsUInt32 idx);
     virtual const MRMCML* cml(epicsUInt32) const;
+
+	virtual MRMUDC* udc(epicsUInt32 i);
+	virtual const MRMUDC* udc(epicsUInt32 i) const;
+
 
     virtual bool specialMapped(epicsUInt32 code, epicsUInt32 func) const;
     virtual void specialSetMap(epicsUInt32 code, epicsUInt32 func,bool);
@@ -227,6 +233,9 @@ private:
 
     typedef std::map<std::pair<OutputType,epicsUInt32>,MRMOutput*> outputs_t;
     outputs_t outputs;
+
+	typedef std::vector<MRMUDC*> univdlys_t;
+	univdlys_t univdlys;
 
     typedef std::vector<MRMPreScaler*> prescalers_t;
     prescalers_t prescalers;

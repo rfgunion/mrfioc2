@@ -160,6 +160,8 @@ try{
     // # of CML outputs
     size_t nCML=0;
     MRMCML::outkind kind=MRMCML::typeCML;
+	// # of <possible> universal fine delay channels
+	size_t nUDC=0;
     // # of FP inputs
     size_t nIFP=0;
 
@@ -179,6 +181,7 @@ try{
         printf("VME64 ");
         nOFP=7;
         nCML=3; // OFP 4-6 are CML
+		nUDC=4; // both univ IO slots = 4 channels
         nOFPUV=4;
         nORB=16;
         nIFP=2;
@@ -262,6 +265,19 @@ try{
     }else if(nCML){
         printf("CML outputs not supported with this firmware\n");
     }
+
+	if (nUDC) {
+		univdlys.resize(nUDC);
+		for(size_t i=0; i<4; i++) {
+			univdlys[i]=0;
+		}
+		MRMUDM *temp = new MRMUDM(0, *this, form);
+		univdlys[0]=new MRMUDC(id+":UDC0", 0, *temp);
+		univdlys[1]=new MRMUDC(id+":UDC1", 1, *temp);
+		temp = new MRMUDM(1, *this, form);
+		univdlys[2]=new MRMUDC(id+":UDC2", 2, *temp);
+		univdlys[3]=new MRMUDC(id+":UDC3", 3, *temp);
+	}
 
     for(size_t i=0; i<NELEMENTS(this->events); i++) {
         events[i].code=i;
@@ -469,6 +485,22 @@ EVRMRM::cml(epicsUInt32 i) const
     if(i>=shortcmls.size() || !shortcmls[i])
         throw std::out_of_range("CML Short id is out of range");
     return shortcmls[i];
+}
+
+MRMUDC*
+EVRMRM::udc(epicsUInt32 i)
+{
+	if(i>=univdlys.size() || !univdlys[i])
+		throw std::out_of_range("Univ Dly id is out of range");
+	return univdlys[i];
+}
+
+const MRMUDC*
+EVRMRM::udc(epicsUInt32 i) const
+{
+	if(i>=univdlys.size() || !univdlys[i])
+		throw std::out_of_range("Univ Dly id is out of range");
+	return univdlys[i];
 }
 
 bool

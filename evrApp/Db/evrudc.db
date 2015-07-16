@@ -1,0 +1,62 @@
+# Records to control UNIV_DLY_TTL module
+#
+# Macros:
+#  ON = output record name prefix
+#  OBJ = <devObj name>:UDC<unit>.  Unit is 0-3; there are 2 possible
+#  	modules with 2 channels each.  units 0 and 1 are in module 0,
+#	2 and 3 in 1.
+#
+#  
+record(longout, "$(ON)Delay-SP") {
+  field(DTYP, "Obj Prop uint32")
+  field(OUT, "@OBJ=$(OBJ), PROP=Delay")
+  field(DESC, "Fine Delay Univ I/O")
+  field(PINI, "YES")
+  field(HOPR, "0x3ff")
+  field(LOPR, "0")
+  field(DRVH, "0x3ff")
+  field(DRVL, "0")
+  field(FLNK, "$(ON)Delay-RB")
+  field(DISP, "0")
+  field(DISA, "0")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(longin, "$(ON)Delay-RB") {
+  field(DTYP, "Obj Prop uint32")
+  field(INP, "@OBJ=$(OBJ), PROP=Delay")
+  field(DESC, "Fine Delay Univ I/O")
+  field(HOPR, "0x3ff")
+  field(LOPR, "0")
+  field(HIGH, "0x3ff")
+  field(HSV, "MAJOR")
+}
+#
+# enable does two channels.  each channel maps to same bit.
+#
+record(bo, "$(ON)Ena-Sel") {
+  field(DTYP, "Obj Prop bool")
+  field(OUT, "@OBJ=$(OBJ), PROP=Enable")
+  field(DESC, "Fine Delay Univ I/O Enable")
+  field(PINI, "YES")
+  field(VAL , "1")
+  field(MASK, "1")
+  field(ONAM, "Enable")
+  field(ZNAM, "Disable")
+  info(autosaveFields_pass0, "VAL")
+}
+record(bi, "$(ON)Ena-RB") {
+  field(DTYP, "Obj Prop bool")
+  field(INP, "@OBJ=$(OBJ), PROP=Enable")
+  field(DESC, "Fine Delay Univ I/O Enable")
+  field(VAL , "1")
+  field(MASK, "1")
+  field(ONAM, "Enabled")
+  field(ZNAM, "Disabled")
+}
+
+  
+
+
+
+

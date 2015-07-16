@@ -17,6 +17,7 @@
 #include "evr/prescaler.h"
 #include "evr/cml.h"
 #include "evr/util.h"
+#include "evr/udc.h"
 
 #include "dbCommon.h"
 
@@ -60,6 +61,10 @@ PreScaler::~PreScaler()
 }
 
 CML::~CML()
+{
+}
+
+UDC::~UDC()
 {
 }
 
@@ -217,3 +222,11 @@ OBJECT_BEGIN(CML) {
                             &CML::setPattern<CML::patternLow>);
 
 } OBJECT_END(CML)
+
+OBJECT_BEGIN(UDC) {
+
+	OBJECT_PROP2("Enable", &UDC::enabled, &UDC::enable);
+
+	OBJECT_PROP2("Delay", &UDC::delay, &UDC::setDelay);
+
+} OBJECT_END(UDC)

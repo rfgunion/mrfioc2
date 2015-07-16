@@ -18,6 +18,7 @@ INC += evr/input.h
 INC += evr/prescaler.h
 INC += evr/evr.h
 INC += evr/cml.h
+INC += evr/udc.h
 
 evr_SRCS += evr.cpp
 
