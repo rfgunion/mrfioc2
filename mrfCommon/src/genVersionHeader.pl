@@ -5,6 +5,7 @@
 # describing the VCS revision
 #
 
+use lib $ENV{'EPICS_BASE'}.'/src/tools';
 use EPICS::Getopts;
 use POSIX qw(strftime);
 
