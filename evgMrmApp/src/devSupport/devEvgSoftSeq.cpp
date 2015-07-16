@@ -318,8 +318,11 @@ write_wf_timestamp(waveformRecord* pwf) {
 
         SCOPED_LOCK2(seq->m_lock, guard);
         if(seq->getTimestampInpMode() == TICKS) {
-            for(unsigned int i = 0; i < size; i++)
+            for(unsigned int i = 0; i < size; i++) {
+				if (i && ((epicsFloat64*)pwf->bptr)[i] == 0.0)
+					break;
                 ts[i] = (epicsUInt64)floor(((epicsFloat64*)pwf->bptr)[i] + 0.5);
+			}
         } else {
             /*
              * When timestamp Input mode is EGU; Scale the time to seconds
@@ -328,6 +331,8 @@ write_wf_timestamp(waveformRecord* pwf) {
             epicsFloat64 seconds;
             epicsUInt32 timeScaler = seq->getTimestampResolution() ;
             for(unsigned int i = 0; i < size; i++) {
+				if (i && ((epicsFloat64*)pwf->bptr)[i] == 0.0)
+					break;
                seconds  = ((epicsFloat64*)pwf->bptr)[i] / pow(10, timeScaler);
                ts[i] = (epicsUInt64)floor(seconds *
                        evg->getEvtClk()->getFrequency() * pow(10,6) + 0.5);
